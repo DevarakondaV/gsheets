@@ -7,6 +7,19 @@ from oauth2client.file import Storage
 class gsheets:
 
     def __init__(self,col_names,client_id,client_secret,sheet_id = None):
+        """
+            This init function authenticates the user. Creates a spreadsheet if none provided.
+            Adds the initial titles to the spreadsheet.
+            
+            args:
+                col_names: List. List of Strings containing the names of the columns.
+                client_id: String. Google Oauth Client id.
+                client_secret: String. Google Oauth Client Secret.
+                sheet_id: String. Google SpreadSheet ID. If None, a new sheet with ID will be created
+            
+            returns:
+                None.
+        """
         if not isinstance(col_names,list):
             raise TypeError("Col_names parameter must be list")
         self.client_id = client_id
@@ -36,6 +49,9 @@ class gsheets:
         self.service = build('sheets','v4',http=self.credentials.authorize(Http()))
 
     def __check_creds(self):
+        """
+            Checks if cerdentials are valid. If not, reauthenticates.
+        """
         if not self.credentials or self.credentials.invalid:
             self._authenticate_get_creds()
     
@@ -52,6 +68,9 @@ class gsheets:
         return
     
     def _add_titles(self):
+        """
+            Adds titles to the spreadsheet
+        """
         self.__check_creds()
         gsheets_titals = [self.col_names,]
         body = {
@@ -64,6 +83,15 @@ class gsheets:
 
     #Functions for adding to google sheets
     def add_values(self,dict_values):
+        """
+            Adds the new values to the spreadsheet.
+        
+            args:
+                dict_values: Dictionary. Contains the column names as Keys and the corresponding value to add.
+            
+            returns:
+                None
+        """"
         self.__check_creds()        
         values = self._parse_new_values(dict_values)
         body = {
