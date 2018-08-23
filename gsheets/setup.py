@@ -22,6 +22,7 @@ setuptools.setup(
     ],
     classifiers=[
         "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 2",
         "License :: OSI Approved :: MIT License",
         "Operationg System :: OS Independent",
     ],
